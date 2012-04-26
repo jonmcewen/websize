@@ -9,7 +9,10 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.junit.Test;
@@ -21,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class WebSizeServiceTest {
-	
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(WebSizeServiceTest.class);
 
@@ -59,10 +62,12 @@ public class WebSizeServiceTest {
 
 		// then the list should contain these results
 		List<WebSizeResult> expected = new ArrayList<WebSizeResult>();
-		expected.add(WebSizeResult.newUnknownSizeResult(urlFor(ERROR_ADDRESS)));
-		expected.add(new WebSizeResult(urlFor(ADDRESS2), 2L));
 		expected.add(new WebSizeResult(urlFor(ADDRESS1), 1L));
-	
+		expected.add(new WebSizeResult(urlFor(ADDRESS2), 2L));
+		expected.add(WebSizeResult.newUnknownSizeResult(urlFor(ERROR_ADDRESS)));
+		Collections.sort(expected, new WebSiteResultComparator());
+		Collections.sort(actual, new WebSiteResultComparator());
+
 		assertNotNull("Null list returned", actual);
 		logger.debug("Expected: {}", expected);
 		logger.debug("Actual: {}", actual);
@@ -72,20 +77,48 @@ public class WebSizeServiceTest {
 
 	@Test
 	public void shouldThrowExceptionIfNullExecutor() {
-		fail("Not yet implemented"); // TODO
+		try {
+			new WebSizeService(null, counter, retriever);
+			fail("Should check for null executor");
+		} catch (IllegalArgumentException e) {
+			// pass
+			// TODO check message
+		}
 	}
 
 	@Test
 	public void shouldThrowExceptionIfNullRetriever() {
-		fail("Not yet implemented"); // TODO
+		try {
+			new WebSizeService(Executors.newCachedThreadPool(), counter, null);
+			fail("Should check for null retriever");
+		} catch (IllegalArgumentException e) {
+			// pass
+			// TODO check message
+		}
 	}
 
 	@Test
 	public void shouldThrowExceptionIfNullCounter() {
-		fail("Not yet implemented"); // TODO
+		try {
+			new WebSizeService(Executors.newCachedThreadPool(), null, retriever);
+			fail("Should check for null counter");
+		} catch (IllegalArgumentException e) {
+			// pass
+			// TODO check message
+		}
 	}
 
 	private URL urlFor(String address) throws MalformedURLException {
 		return new URL(HTTP_PREFIX + address);
+	}
+
+	public static class WebSiteResultComparator implements
+			Comparator<WebSizeResult> {
+
+		@Override
+		public int compare(WebSizeResult o1, WebSizeResult o2) {
+			return String.valueOf(o1).compareTo(String.valueOf(o2));
+		}
+
 	}
 }

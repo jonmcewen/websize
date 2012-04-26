@@ -48,7 +48,12 @@ public class WebSizeService {
 		this.counter = counter;
 		this.retriever = retriever;
 
-		// TODO null checks
+		// TODO individual checks
+		if (counter == null || retriever == null || executor == null) {
+			throw new IllegalArgumentException(
+					"One or more constructor argument was null.");
+		}
+
 	}
 
 	/**
@@ -112,6 +117,7 @@ public class WebSizeService {
 
 				} else {
 					// out of time
+					future.cancel(true);
 					results.add(handleTimeout(url));
 				}
 			}

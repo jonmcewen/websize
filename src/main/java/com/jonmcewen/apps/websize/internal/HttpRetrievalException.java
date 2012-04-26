@@ -1,6 +1,11 @@
 package com.jonmcewen.apps.websize.internal;
 
+import java.net.URL;
+
 public class HttpRetrievalException extends UrlRetrievalException {
 
-	// TODO add constructor taking response code argument
+	public HttpRetrievalException(URL url, String responseMessage) {
+		super("Could not retrieve from " + url + " because: " + responseMessage);
+	}
+
 }
