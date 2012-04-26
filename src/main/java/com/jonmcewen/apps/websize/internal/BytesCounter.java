@@ -17,6 +17,19 @@ public class BytesCounter {
 	 * 
 	 */
 	public long countBytes(InputStream input) throws IOException {
-		return 0;
+		if (input == null) {
+			throw new IllegalArgumentException("input cannot be null");
+		}
+		// TODO this could probably be done quicker to use up less of the
+		// timeout
+		long size = 0;
+		int data = input.read();
+		while (data != -1) {
+			size++;
+
+			data = input.read();
+		}
+		input.close();
+		return size;
 	}
 }
