@@ -1,0 +1,39 @@
+This project is a simple Java implementation, providing a solution to the problem "How Big is the Webpage", described below.
+
+Approach taken:
+
+1) Sketch design, separating the basic concerns of UI, parallel processing, HTTP retrieval and size calculation.
+
+2) Create Eclipse project and code framework.
+
+3) Create unit tests and implementation.  Start with service layer and work down, and finish with UI (the UI having already been specified in the problem description).
+
+4) Perform acceptance testing.
+
+======================================================================
+
+How Big is the Webpage?
+
+Create a program to calculate the number of bytes required to store the responses from a number of webpages. There is a constraint for the maximum execution time allowed so you will need to process each of the websites simultaneously. The total time allowed for the program to execute is 1,500ms.
+
+The input will contain a list of websites addresses without the http:// prefix. The number of webpages supplied in the input can be of any length and will be terminated by a -1.
+
+Each line of the output will be the webpage address followed by a space and then the number of bytes in the response. If there was an error connecting to the site or the site didn't return a response in the time allowed output a asterisk (*) as a place holder for the webpage size.
+
+The output can be in any order and needn't match the order of the websites provided in the input. The output will be terminated with a -1 when the execution is complete.
+
+Test Case
+
+Sample Input:
+
+capsulecrm.com
+capsulecrm.com.a
+www.bbc.co.uk
+-1
+
+Possible output for Sample Input:
+
+capsulecrm.com.a *
+capsulecrm.com 12785
+www.bbc.co.uk 48229
+-1
