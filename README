@@ -10,6 +10,8 @@ Approach taken:
 
 4) Perform acceptance testing.
 
+Run the WebSize class (in Eclipse for ease) and enter addresses on the console, followed by "-1".
+
 ======================================================================
 
 How Big is the Webpage?
